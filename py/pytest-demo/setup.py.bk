@@ -1,0 +1,42 @@
+import os
+
+from setuptools import setup, find_packages
+
+
+def version_func(b):
+    build_num = os.getenv("BUILD_NUMBER")
+    if build_num:
+        return '1.0.%s' % build_num
+    else:
+        return "0.0.0"
+
+
+install_requires = []
+with open("requirements.txt", 'rb') as fh:
+    for line in fh:
+        line = line.strip()
+        if line.startswith("#") or not line:
+            continue
+        install_requires.append(line)
+
+conf_files = []
+for p in os.listdir("conf"):
+    conf_files.append(os.path.join("conf", p))
+
+setup(
+    name="pytest-demo",
+    packages=find_packages(),
+    entry_points={
+        'console_scripts': [
+            'pytest-demo=mypkg.main:main',
+        ],
+    },
+    data_files=[
+        ("mypkg", conf_files),
+    ],
+    setup_requires=['setuptools_scm'],
+    use_scm_version={
+        'version_scheme': version_func,
+    },
+    install_requires=install_requires,
+)

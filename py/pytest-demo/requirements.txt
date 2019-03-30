@@ -1,0 +1,5 @@
+scandir
+psutil
+PyYAML
+# Also requires ros python (for rosbag import) but that
+# isn't installable via pip.
